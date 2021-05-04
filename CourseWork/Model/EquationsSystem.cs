@@ -10,32 +10,36 @@ namespace CourseWork.Model
 {
     class EquationsSystem
     {
-        private readonly List<List<double>> _originMatrix;
-
         public EquationsSystem(List<List<double>> matrix)
         {
-            _originMatrix = matrix;
-            MatrixEdit = matrix;
+            Matrix = matrix;
         }
 
-        public List<List<double>> MatrixEdit { get; }
+        public List<List<double>> Matrix { get; }
 
         public EquationResult SolveGauss()
         {
+            FirstTransformation();
             return new EquationResult(1, 2, 3);
         }
 
         public void FirstTransformation()
         {
-            var i = 0;
-            foreach (var line in _originMatrix)
+            int i = 0;
+            foreach (var line in Matrix)
             {
                 if (line[0] == 1)
                 {
-                    MatrixEdit.Swap(i, 0);
+                    Matrix.Swap(i, 0);
+                    break;
                 }
                 i++;
             }
+        }
+
+        public void StairsTransformation()
+        {
+            
         }
     }
 }
