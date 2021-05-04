@@ -20,6 +20,7 @@ namespace CourseWork.Model
         public EquationResult SolveGauss()
         {
             FirstTransformation();
+            StairsTransformation();
             return new EquationResult(1, 2, 3);
         }
 
@@ -33,13 +34,34 @@ namespace CourseWork.Model
                     Matrix.Swap(i, 0);
                     break;
                 }
+
                 i++;
             }
         }
 
         public void StairsTransformation()
         {
-            
+            int lines = Matrix.Count();
+            int counter = 1;
+            int subCounter = counter + 1;
+            while (subCounter <= lines)
+            {
+                GettingZero(counter);
+                counter++;
+                if (counter >= lines)
+                {
+                    counter = subCounter;
+                    subCounter++;
+                }
+            }
+        }
+
+        private void GettingZero(int line)
+        {
+            if (line <= 0)
+            {
+                return;
+            }
         }
     }
 }
