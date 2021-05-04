@@ -56,11 +56,44 @@ namespace CourseWork.Model
             }
         }
 
-        private void GettingZero(int line)
+        private void GettingZero(int secondLine)
         {
-            if (line <= 0)
+            if (secondLine <= 0)
             {
                 return;
+            }
+
+            int nullLocation = 0;
+            foreach (var number in Matrix[secondLine])
+            {
+                if (number != 0)
+                {
+                    return;
+                }
+
+                nullLocation++;
+            }
+
+            int firstLine = 0;
+            foreach (var line in Matrix)
+            {
+                if (line[nullLocation] == 0)
+                {
+                    return;
+                }
+
+                firstLine++;
+            }
+
+            double factor = -Matrix[secondLine][nullLocation] / Matrix[firstLine][nullLocation];
+            AppendLines(firstLine, secondLine, factor);
+        }
+
+        private void AppendLines(int firstLine, int secondLine, double factor)
+        {
+            for (var i = 0; i < Matrix[0].Count; i++)
+            {
+                Matrix[secondLine][i] = Matrix[firstLine][i] * factor;
             }
         }
     }
