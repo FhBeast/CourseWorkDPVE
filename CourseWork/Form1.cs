@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CourseWork.Utils;
+using CourseWork.Extension;
 
 namespace CourseWork
 {
@@ -36,33 +36,40 @@ namespace CourseWork
                     errorProvider1.SetError(panel1, "Одна из строк пуста!");
                     return;
                 }
-                else if (!int.TryParse(textBox.Text, out _))
+                else if (!double.TryParse(textBox.Text, out _))
                 {
                     errorProvider1.SetError(panel1, "Вводить можно только числа!");
                     return;
                 }
                 errorProvider1.Clear();
-
-                double.TryParse(textBox0_0.Text, out double x1);
-                double.TryParse(textBox1_0.Text, out double x2);
-                double.TryParse(textBox2_0.Text, out double x3);
-                double.TryParse(textBox0_1.Text, out double y1);
-                double.TryParse(textBox1_1.Text, out double y2);
-                double.TryParse(textBox2_1.Text, out double y3);
-                double.TryParse(textBox0_2.Text, out double z1);
-                double.TryParse(textBox1_2.Text, out double z2);
-                double.TryParse(textBox2_2.Text, out double z3);
-                double.TryParse(textBox0_3.Text, out double result1);
-                double.TryParse(textBox1_3.Text, out double result2);
-                double.TryParse(textBox2_3.Text, out double result3);
-
-                labelFirstLine.Text = String.Format("{0}x {1}y {2}z = {3}",
-                    x1, FormatChanger.ToEquationForm(y1), FormatChanger.ToEquationForm(z1), result1);
-                labelSecondLine.Text = String.Format("{0}x {1}y {2}z = {3}",
-                    x2, FormatChanger.ToEquationForm(y2), FormatChanger.ToEquationForm(z2), result2);
-                labelThirdLine.Text = String.Format("{0}x {1}y {2}z = {3}",
-                    x3, FormatChanger.ToEquationForm(y3), FormatChanger.ToEquationForm(z3), result3);
             }
+
+            var x1 = double.Parse(textBox0_0.Text);
+            var x2 = double.Parse(textBox1_0.Text);
+            var x3 = double.Parse(textBox2_0.Text);
+            var y1 = double.Parse(textBox0_1.Text);
+            var y2 = double.Parse(textBox1_1.Text);
+            var y3 = double.Parse(textBox2_1.Text);
+            var z1 = double.Parse(textBox0_2.Text);
+            var z2 = double.Parse(textBox1_2.Text);
+            var z3 = double.Parse(textBox2_2.Text);
+            var result1 = double.Parse(textBox0_3.Text);
+            var result2 = double.Parse(textBox1_3.Text);
+            var result3 = double.Parse(textBox2_3.Text);
+
+            labelFirstLine.Text = $@"{x1}x {y1.ToEquationForm()}y {z1.ToEquationForm()}z = {result1}";
+            labelSecondLine.Text = $@"{x2}x {y2.ToEquationForm()}y {z2.ToEquationForm()}z = {result2}";
+            labelThirdLine.Text = $@"{x3}x {y3.ToEquationForm()}y {z3.ToEquationForm()}z = {result3}";
+        }
+
+        private static void CalculateEquation()
+        {
+
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            CalculateEquation();
         }
     }
 }
