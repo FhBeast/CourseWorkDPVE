@@ -32,12 +32,13 @@ namespace CourseWork
         {
             foreach (var textBox in Controls.OfType<TextBox>())
             {
+                double x;
                 if (string.IsNullOrEmpty(textBox.Text))
                 {
                     errorProvider1.SetError(panel1, "Одна из строк пуста!");
                     return;
                 }
-                else if (!double.TryParse(textBox.Text, out _))
+                else if (!double.TryParse(textBox.Text, out x))
                 {
                     errorProvider1.SetError(panel1, "Вводить можно только числа!");
                     return;
@@ -95,6 +96,13 @@ namespace CourseWork
             ShowSolutionStep(equation);
             equation.FirstTransformation();
             ShowSolutionStep(equation);
+            equation.StairsTransformation();
+            ShowSolutionStep(equation);
+            equation.InverseGauss();
+            double x = equation.Result.X;
+            double y = equation.Result.Y;
+            double z = equation.Result.Z;
+            richTextBox1.Text += $"x = {x}\n y = {y}\n z = {z}\n";
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -120,5 +128,11 @@ namespace CourseWork
                    $"|\t{equation.Matrix[2][3]}\t|\n\n";
             richTextBox1.Text += text;
         }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            Help.ShowHelp(null, "Helper.chm");
+        }
+
     }
 }

@@ -16,12 +16,14 @@ namespace CourseWork.Model
         }
 
         public List<List<double>> Matrix { get; }
+        public EquationResult Result { get; } = new EquationResult();
 
         public EquationResult SolveGauss()
         {
             FirstTransformation();
             StairsTransformation();
-            return new EquationResult(1, 2, 3);
+            InverseGauss();
+            return Result;
         }
 
         public void FirstTransformation()
@@ -56,6 +58,13 @@ namespace CourseWork.Model
             }
         }
 
+        public void InverseGauss()
+        {
+            Result.Z = Matrix[2][3] / Matrix[2][2];
+            Result.Y = (Matrix[1][3] - (Result.Z * Matrix[1][2])) / Matrix[1][1];
+            Result.X = (Matrix[0][3] - (Result.Z * Matrix[0][2]) - (Result.Y * Matrix[0][1])) / Matrix[0][0];
+        }
+
         private void GettingZero(int secondLine)
         {
             if (secondLine <= 0)
@@ -68,22 +77,13 @@ namespace CourseWork.Model
             {
                 if (number != 0)
                 {
-                    return;
+                    break;
                 }
 
                 nullLocation++;
             }
 
-            int firstLine = 0;
-            foreach (var line in Matrix)
-            {
-                if (line[nullLocation] == 0)
-                {
-                    return;
-                }
-
-                firstLine++;
-            }
+            int firstLine = nullLocation;
 
             double factor = -Matrix[secondLine][nullLocation] / Matrix[firstLine][nullLocation];
             AppendLines(firstLine, secondLine, factor);
@@ -93,7 +93,7 @@ namespace CourseWork.Model
         {
             for (var i = 0; i < Matrix[0].Count; i++)
             {
-                Matrix[secondLine][i] = Matrix[firstLine][i] * factor;
+                Matrix[secondLine][i] += Matrix[firstLine][i] * factor;
             }
         }
     }
