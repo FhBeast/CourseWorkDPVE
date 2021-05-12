@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows.Forms;
 using CourseWork.Extension;
 using CourseWork.Model;
+using Word = Microsoft.Office.Interop.Word;
 
 namespace CourseWork
 {
@@ -16,6 +13,7 @@ namespace CourseWork
     {
         public Form1()
         {
+            Application.Run(new FormLoad());
             InitializeComponent();
         }
 
@@ -30,21 +28,22 @@ namespace CourseWork
 
         private void DrawPreview(object sender, EventArgs e)
         {
+            toolStripButton1.Enabled = false;
             foreach (var textBox in Controls.OfType<TextBox>())
             {
-                double x;
                 if (string.IsNullOrEmpty(textBox.Text))
                 {
                     errorProvider1.SetError(panel1, "Одна из строк пуста!");
                     return;
                 }
-                else if (!double.TryParse(textBox.Text, out x))
+                else if (!double.TryParse(textBox.Text, out _))
                 {
                     errorProvider1.SetError(panel1, "Вводить можно только числа!");
                     return;
                 }
-                errorProvider1.Clear();
             }
+            errorProvider1.Clear();
+            toolStripButton1.Enabled = true;
 
             var x1 = double.Parse(textBox0_0.Text);
             var x2 = double.Parse(textBox1_0.Text);
@@ -134,5 +133,25 @@ namespace CourseWork
             Help.ShowHelp(null, "Helper.chm");
         }
 
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            var dll = Assembly.LoadFrom("About.dll");
+            var type = dll.GetType("About.FormAbout");
+            var instance = Activator.CreateInstance(type);
+            (instance as Form)?.Show();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            if (richTextBox1.Text == string.Empty)
+            {
+                MessageBox.Show("Вывод отсутсвует.");
+                return;
+            }
+            var wd = new Word.Application {Visible = true};
+            var document = wd.Documents.Add(Type.Missing);
+            var paragraph = document.Paragraphs.Add(Type.Missing);
+            paragraph.Range.Text = richTextBox1.Text;
+        }
     }
 }
